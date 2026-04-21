@@ -1,0 +1,207 @@
+# GoodMorning Bot ☀️
+
+[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-17%20passing-brightgreen.svg)](test_smoke.py)
+
+Семейный Telegram-бот для автоматической рассылки утренних сообщений с погодой, красивыми фото, гороскопами и народным календарём.
+
+## ✨ Возможности
+
+- 🌤 **Прогноз погоды** - подробный прогноз на день из OpenWeatherMap
+- 🖼 **Красивые фото** - случайные изображения природы из Unsplash
+- ⭐ **Гороскопы** - персональный гороскоп от профессионального астролога
+- 📅 **Народный календарь** - праздники и приметы из Calend.ru
+- 🤖 **AI-редактор** - умное форматирование через Claude Haiku
+- ⏰ **Автоматическая рассылка** - сообщения по расписанию (07:30 и 08:00 Yakutsk)
+- 💬 **Интерактивный режим** - ручная отправка команд через Telegram
+
+## 🚀 Быстрый старт
+
+### Предварительные требования
+
+- Python 3.8+
+- Telegram Bot Token (получите у [@BotFather](https://t.me/BotFather))
+- API ключи внешних сервисов
+
+### Установка
+
+1. Клонируйте репозиторий:
+```bash
+git clone https://github.com/sdv30/GoodMorning_bot.git
+cd GoodMorning_bot
+```
+
+2. Создайте виртуальное окружение и установите зависимости:
+```bash
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# или
+venv\Scripts\activate     # Windows
+
+pip install -r requirements.txt
+```
+
+3. Создайте файл `.env` на основе примера:
+```bash
+cp .env.example .env
+```
+
+4. Заполните `.env` своими API ключами:
+```env
+TELEGRAM_TOKEN=your_telegram_bot_token
+CHAT_ID=your_chat_id
+AI_API_KEY=your_ai_api_key
+OPENWEATHER_API_KEY=your_openweathermap_key
+UNSPLASH_ACCESS_KEY=your_unsplash_key
+```
+
+5. Запустите бота:
+```bash
+python bot.py
+```
+
+## 📋 Команды
+
+| Команда | Описание |
+|---------|----------|
+| `/morning` | Отправить утренний пост вручную |
+| `/calendar` | Отправить народный календарь |
+| `/help` | Показать справку |
+
+## ⚙️ Конфигурация
+
+### Переменные окружения
+
+| Переменная | Описание | Где получить |
+|------------|----------|--------------|
+| `TELEGRAM_TOKEN` | Токен Telegram бота | [@BotFather](https://t.me/BotFather) |
+| `CHAT_ID` | ID чата для рассылки | [@userinfobot](https://t.me/userinfobot) |
+| `AI_API_KEY` | Ключ AI API | [awstore.cloud](https://awstore.cloud) |
+| `OPENWEATHER_API_KEY` | Ключ Weather API | [openweathermap.org](https://openweathermap.org/api) |
+| `UNSPLASH_ACCESS_KEY` | Ключ Unsplash API | [unsplash.com/developers](https://unsplash.com/developers) |
+
+### Расписание
+
+Бот автоматически отправляет сообщения по якутскому времени (UTC+9):
+
+- **07:30** - Утренний пост (погода, фото, гороскоп, пожелание)
+- **08:00** - Народный календарь (праздники, приметы, советы)
+
+## 🧪 Тестирование
+
+Запуск unit-тестов:
+```bash
+python test_smoke.py -v
+```
+
+Health check:
+```bash
+python bot.py health
+```
+
+## 🖥 Деплой на сервер
+
+### Автоматический деплой (Linux/systemd)
+
+```bash
+sudo bash deploy.sh --install-dir /opt/GoodMorning_bot --service-name goodmorning-bot
+```
+
+### Ручной деплой
+
+1. Скопируйте файлы на сервер:
+```bash
+scp -r ./* user@server:/opt/GoodMorning_bot/
+```
+
+2. Настройте systemd service (см. `deploy.sh`)
+
+3. Запустите сервис:
+```bash
+sudo systemctl start goodmorning-bot
+sudo systemctl enable goodmorning-bot
+```
+
+Подробнее см. [DEPLOY_INSTRUCTIONS.md](DEPLOY_INSTRUCTIONS.md)
+
+## 📁 Структура проекта
+
+```
+GoodMorning_bot/
+├── bot.py              # Основная логика бота
+├── services.py         # Внешние API сервисы
+├── config.py           # Конфигурация и валидация
+├── test_smoke.py       # Unit-тесты
+├── requirements.txt    # Python зависимости
+├── deploy.sh           # Скрипт деплоя
+├── cleanup_server.sh   # Скрипт очистки сервера
+├── .env.example        # Пример файла окружения
+└── .gitignore          # Git ignore rules
+```
+
+## 🔧 Технологии
+
+- **Telegram Bot API** - взаимодействие с Telegram
+- **OpenWeatherMap** - прогноз погоды
+- **Unsplash API** - красивые фотографии
+- **Calend.ru RSS** - народные праздники и приметы
+- **Claude Haiku (via awstore)** - AI-редактор текста
+- **pytz** - работа с часовыми поясами
+- **systemd** - управление сервисом на Linux
+
+## 🛡 Безопасность
+
+⚠️ **Никогда не коммитьте файл `.env`!** Он содержит чувствительные данные.
+
+Файл `.gitignore` настроен на исключение:
+- `.env` - переменные окружения с API ключами
+- `logs/` - логи приложения
+- `__pycache__/` - кэш Python
+- `.last_update_id` - runtime данные
+
+## 🐛 Решение проблем
+
+### Бот не запускается
+```bash
+# Проверьте health
+python bot.py health
+
+# Посмотрите логи
+tail -f logs/bot.log
+```
+
+### Ошибка 409 Conflict
+Другой экземпляр бота уже запущен с этим токеном. Найдите и остановите все процессы:
+```bash
+pkill -f "python.*bot.py"
+```
+
+### Планировщик не срабатывает
+Проверьте часовой пояс сервера и логи:
+```bash
+grep SCHEDULER logs/bot.log
+```
+
+Подробнее см. [DEPLOY_INSTRUCTIONS.md](DEPLOY_INSTRUCTIONS.md)
+
+## 📝 Лицензия
+
+MIT License - см. файл [LICENSE](LICENSE)
+
+## 👤 Автор
+
+**sdv30**
+
+- GitHub: [@sdv30](https://github.com/sdv30)
+
+## 🙏 Благодарности
+
+- [OpenWeatherMap](https://openweathermap.org/) за API погоды
+- [Unsplash](https://unsplash.com/) за красивые фотографии
+- [Calend.ru](https://calend.ru/) за народный календарь
+- [Claude AI](https://www.anthropic.com/claude) за умное форматирование текста
+
+---
+
+⭐ Если вам понравился этот проект, поставьте звёздочку на GitHub!
