@@ -145,8 +145,9 @@ GoodMorning_bot/
 - **Telegram Bot API** - взаимодействие с Telegram
 - **OpenWeatherMap** - прогноз погоды
 - **Unsplash API** - красивые фотографии
+- **1001goroskop.ru** - парсинг гороскопов (HTML scraping)
 - **Calend.ru RSS** - народные праздники и приметы
-- **Claude Haiku (via awstore)** - AI-редактор текста
+- **AI API** - AI-редактор текста (ваш поставщик ИИ)
 - **pytz** - работа с часовыми поясами
 - **systemd** - управление сервисом на Linux
 
@@ -158,7 +159,7 @@ GoodMorning_bot/
 | 🖼 Фото | [Unsplash](https://unsplash.com/) | REST API (random photos) |
 | ⭐ Гороскопы | [1001goroskop.ru](https://1001goroskop.ru/) | HTML парсинг (знак: aries/Овен) |
 | 📅 Календарь | [Calend.ru](https://calend.ru/) | RSS feed |
-| 🤖 AI текст | [Claude Haiku](https://www.anthropic.com/claude) | API через awstore.cloud |
+| 🤖 AI текст | Ваш поставщик ИИ | API (настраивается в .env) |
 
 ### Настройка знака зодиака
 
@@ -181,6 +182,52 @@ GoodMorning_bot/
    - `"capricorn"` - Козерог
    - `"aquarius"` - Водолей
    - `"pisces"` - Рыбы
+
+### ⏰ Настройка часового пояса
+
+По умолчанию бот работает по **якутскому времени (Asia/Yakutsk, UTC+9)**. Если ваш город в другом часовом поясе:
+
+1. Откройте `bot.py`
+2. Найдите все occurrences `Asia/Yakutsk` и замените на ваш часовой пояс:
+   ```python
+   # Было
+   yakutsk_tz = pytz.timezone("Asia/Yakutsk")
+   
+   # Стало (например, для Москвы)
+   yakutsk_tz = pytz.timezone("Europe/Moscow")
+   
+   # Или для Владивостока
+   yakutsk_tz = pytz.timezone("Asia/Vladivostok")
+   
+   # Или для Нью-Йорка
+   yakutsk_tz = pytz.timezone("America/New_York")
+   ```
+
+3. Измените расписание в функции `polling_loop()`:
+   ```python
+   TASK_SCHEDULE = [
+       (7, 30, "morning", run_morning),   # 07:30 - утренний пост
+       (8, 0, "calendar", run_calendar),  # 08:00 - народный календарь
+   ]
+   ```
+   Укажите нужное время в вашем часовом поясе.
+
+4. Обновите координаты для погоды в `.env`:
+   ```env
+   YAKUTSK_LAT=55.7558    # Широта вашего города
+   YAKUTSK_LON=37.6173    # Долгота вашего города
+   ```
+
+**Популярные часовые пояса:**
+- `Europe/Moscow` - Москва (UTC+3)
+- `Asia/Yekaterinburg` - Екатеринбург (UTC+5)
+- `Asia/Novosibirsk` - Новосибирск (UTC+7)
+- `Asia/Vladivostok` - Владивосток (UTC+10)
+- `Asia/Magadan` - Магадан (UTC+11)
+- `America/New_York` - Нью-Йорк (UTC-5/-4)
+- `America/Los_Angeles` - Лос-Анджелес (UTC-8/-7)
+
+Полный список: [список часовых поясов IANA](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 
 ## 🛡 Безопасность
 
