@@ -77,7 +77,7 @@ python bot.py
 |------------|----------|--------------|
 | `TELEGRAM_TOKEN` | Токен Telegram бота | [@BotFather](https://t.me/BotFather) |
 | `CHAT_ID` | ID чата для рассылки | [@userinfobot](https://t.me/userinfobot) |
-| `AI_API_KEY` | Ключ AI API | [awstore.cloud](https://awstore.cloud) |
+| `AI_API_KEY` | Ключ AI API | Ваш поставщик ИИ |
 | `OPENWEATHER_API_KEY` | Ключ Weather API | [openweathermap.org](https://openweathermap.org/api) |
 | `UNSPLASH_ACCESS_KEY` | Ключ Unsplash API | [unsplash.com/developers](https://unsplash.com/developers) |
 
